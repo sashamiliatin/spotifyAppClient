@@ -44,22 +44,27 @@ public class Model {
         return response.songs;
     }
 
-    public String saveGame(List<String> input){
-        String command = "Save";
+    public String saveGame(List<String> input,boolean user){
+        String command = "";
+        if(user){
+            command = "user/save";
+        }
+        else {
+            command = "admin/save";
+        }
         Map<String, String> headers = new HashMap<>();
         Map<String, String> body = new HashMap<>();
         headers.put("action",command);
-        body.put("GameName",input.get(0));
+        body.put("SongName",input.get(0));
         body.put("Genre",input.get(1));
-        body.put("GameCompanyDevelop",input.get(2));
-        body.put("GameStoreName",input.get(3));
-        body.put("AddressStore",input.get(4));
+        body.put("Artist",input.get(2));
+        body.put("Link",input.get(3));
         response = sendRequest(headers,body);
         return response.json;
     }
 
     public String updateGame(List<String> input){
-        String command = "Update";
+        String command = "song/update";
         Map<String, String> headers = new HashMap<>();
         Map<String, String> body = new HashMap<>();
         headers.put("action",command);
@@ -71,8 +76,14 @@ public class Model {
         return response.json;
     }
 
-    public String deleteGame(String songLink) {
-        String command = "Delete";
+    public String deleteGame(String songLink,boolean user) {
+        String command = "";
+        if(user){
+            command = "user/delete";
+        }
+        else {
+            command = "admin/delete";
+        }
         Map <String, String> headers = new HashMap <>();
         Map <String, String> body = new HashMap <>();
         headers.put("action", command);
