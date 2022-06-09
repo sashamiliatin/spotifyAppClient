@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class AdminView extends JPanel implements ActionListener {
-    private JTable songsTable;// = new JTable(data, columnNames);
+    private JTable songsTable;
     private GraphicalView gui;
     private String[] songTableColumn = {"Name", "Artist","Genre","Link",""};
     private JButton backButton;
@@ -56,6 +56,6 @@ public class AdminView extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        this.gui.mainView();
     }
 }

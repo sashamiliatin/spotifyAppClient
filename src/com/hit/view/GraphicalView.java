@@ -61,7 +61,14 @@ public class GraphicalView implements View {
         frame.pack();
         frame.setVisible(true);
     }
-
+    public void mainView(){
+        this.mainMenu.setVisible(false);
+        this.adminView.setVisible(false);
+        this.mainMenu = new MainView(this);
+        frame.getContentPane().add(this.mainMenu);
+        frame.pack();
+        frame.setVisible(true);
+    }
     public void frameChange() {
 
     }
