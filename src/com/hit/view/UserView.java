@@ -1,68 +1,70 @@
 package com.hit.view;
 
+import com.hit.client.Song;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Observer;
 
 public class UserView extends JPanel implements ActionListener {
+    private JTable songsTable;
     private GraphicalView gui;
-    private JLabel jLabel1 ;
-    private JTextArea textArea;
-    private JScrollPane jScrollPane1;
-    private JButton userSongs;
-    public JTextField input;
+    private String[] songTableColumn = {"Name", "Artist","Genre","Link",""};
+    private JButton backButton, addSong;
+    private JLabel jLabel;
 
 
     public UserView(GraphicalView gui) {
         this.gui = gui;
-        this.initComponents();
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        this.gui = gui;
+        this.jLabel = new JLabel("Playlist");
+        // toolbar for buttons
+        JToolBar toolBar = new JToolBar();
+        songsTable = new JTable();
+
+        // scroll bar for table
+        JScrollPane userTableScroll = new JScrollPane(songsTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        backButton = new JButton("Go Back");
+        backButton.setActionCommand("back");
+        backButton.addActionListener(this);
+        add(toolBar);
+        add(jLabel);
+        toolBar.add(backButton);
+        toolBar.setMaximumSize(new Dimension(Integer.MAX_VALUE, toolBar.getMinimumSize().height));
+        add(userTableScroll);
     }
 
-    private void initComponents() {
-        this.userSongs = new JButton("Get Songs");
-        this.userSongs.setActionCommand("searchUserSong");
-        String[] columnNames = {"Name", "Artist","Genre","Link",""};
-        Object[][] data =
-                {
-                };
+    public void loadSongs(List<Song> songs) {
+        DefaultTableModel defaultTableModel = (DefaultTableModel) songsTable.getModel();
+        defaultTableModel.setColumnIdentifiers(songTableColumn);
 
-        DefaultTableModel model = new DefaultTableModel(data, columnNames);
-//        JTable table = new JTable( model );
-        this.setPreferredSize(new Dimension(200, 300));
-        this.setLayout(new FlowLayout());
-        this.jLabel1 = new JLabel("User Menu");
-        this.input = new JTextField("input Text");
-        this.userSongs = new JButton("Search");
-        this.userSongs.addActionListener(this);
-//        this.textArea = new JTextArea("A text area is a \"plain\" text component, which means that although it can display text in any font, all of the text is in the same font.");
-//        this.textArea.setColumns(20);
-//        this.textArea.setLineWrap(true);
-//        this.textArea.setRows(5);
-//        this.textArea.setWrapStyleWord(true);
-//        this.textArea.setEditable(false);
-//        this.jScrollPane1 = new JScrollPane(table);
-        this.add(this.jLabel1);
-//        this.add(this.jScrollPane1);
-        this.add(this.input);
-        this.add(this.userSongs);
+        for (Song song : songs) {
+            String[] row = new String[4];
+            row[0] = song.getSongName();
+            row[1] = song.getSongArtist();
+            row[2] = song.getSongGenre();
+            row[3] = song.getSongLink();
 
+            defaultTableModel.addRow(row);
 
-//        this.add(table);
+        }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    this.gui.setUserInput(input.getText());
+        if("back".equals(e.getActionCommand())){
+            this.gui.mainView(this);
 
-    }
-    public void getSongs(){
-        String[] columnNames = {"Name", "Artist","Genre","Link",""};
-        Object[][] data =
-                {
-                };
+        }
+        else if ("search".equals(e.getActionCommand())){
+            this.gui.mainView(this);
+        }
 
     }
 }

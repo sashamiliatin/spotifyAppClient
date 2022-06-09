@@ -43,6 +43,7 @@ public class GraphicalView implements View {
     public void userView() {
         this.mainMenu.setVisible(false);
         this.userView = new UserView(this);
+        this.userView.loadSongs(songs.getPlaylist());
         frame.getContentPane().add(this.userView);
         frame.pack();
         frame.setVisible(true);
@@ -55,15 +56,16 @@ public class GraphicalView implements View {
 
     public void adminView() {
         this.mainMenu.setVisible(false);
-        this.adminView = new AdminView();
+        this.adminView = new AdminView(this);
         this.adminView.loadSongs(songs.getAll());
         frame.getContentPane().add(this.adminView);
         frame.pack();
         frame.setVisible(true);
     }
-    public void mainView(){
-        this.mainMenu.setVisible(false);
-        this.adminView.setVisible(false);
+    public void mainView(JPanel panel){
+//        this.mainMenu.setVisible(false);
+//        this.adminView.setVisible(false);
+        panel.setVisible(false);
         this.mainMenu = new MainView(this);
         frame.getContentPane().add(this.mainMenu);
         frame.pack();
