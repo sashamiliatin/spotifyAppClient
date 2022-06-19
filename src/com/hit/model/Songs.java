@@ -21,8 +21,11 @@ public class Songs extends Observable implements Model {
         return client.getSongs(true);
     }
 
-    public void remove(Song song) {
-        client.deleteSong(song.getSongLink(), false);
+    public void remove(String songLink) {
+//        client.deleteSong(songLink, false);
+        setChanged();
+        notifyObservers(client.deleteSong(songLink, false));
+
     }
 
     public void addToPlaylist(Song song) {

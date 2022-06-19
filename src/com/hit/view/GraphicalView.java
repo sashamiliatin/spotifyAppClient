@@ -51,6 +51,7 @@ public class GraphicalView implements View {
     }
 
     public void setUserInput(String text) {
+        songs.remove(text);
 
     }
 
@@ -74,6 +75,5 @@ public class GraphicalView implements View {
     }
 
     public void frameChange() {
-
     }
 }
