@@ -13,21 +13,21 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Client {
-    public Gson gson = new GsonBuilder().create();;
-    public PrintWriter writer ;
+    public Gson gson = new GsonBuilder().create();
+    ;
+    public PrintWriter writer;
     public Response response;
     public Request request;
     public Scanner reader;
     public Socket toServer;
-    public int port = 3000;
+    public int port = 6000;
 
 
-    public List<Song> getSongs( boolean user){
+    public List<Song> getSongs(boolean user) {
         String command = "";
-        if(user){
+        if (user) {
             command = "user/songs";
-        }
-        else {
+        } else {
             command = "admin/songs";
         }
         Map<String, String> headers = new HashMap<>();
@@ -38,74 +38,70 @@ public class Client {
         return response.songs;
     }
 
-    public List<Song> getSong(String searchVal, boolean user){
+    public List<Song> getSong(String searchVal, boolean user) {
         String command = "";
-        if(user){
+        if (user) {
             command = "user/song";
-        }
-        else {
+        } else {
             command = "admin/song";
         }
         Map<String, String> headers = new HashMap<>();
         Map<String, String> body = new HashMap<>();
-        body.put("searchVal",searchVal);
+        body.put("searchVal", searchVal);
         headers.put("action", command);
         System.out.println();
         response = sendRequest(headers, body);
         return response.songs;
     }
 
-    public String saveSong(Song song,boolean user){
+    public String saveSong(Song song, boolean user) {
         String command = "";
-        if(user){
+        if (user) {
             command = "user/save";
-        }
-        else {
+        } else {
             command = "admin/save";
         }
         Map<String, String> headers = new HashMap<>();
         Map<String, String> body = new HashMap<>();
-        headers.put("action",command);
-        body.put("SongName",song.getSongName());
-        body.put("Genre",song.getSongGenre());
-        body.put("Artist",song.getSongArtist());
-        body.put("Link",song.getSongLink());
-        response = sendRequest(headers,body);
+        headers.put("action", command);
+        body.put("SongName", song.getSongName());
+        body.put("Genre", song.getSongGenre());
+        body.put("Artist", song.getSongArtist());
+        body.put("Link", song.getSongLink());
+        response = sendRequest(headers, body);
         return response.json;
     }
 
-    public String updateSong(List<String> input){
+    public String updateSong(List<String> input) {
         String command = "song/update";
         Map<String, String> headers = new HashMap<>();
         Map<String, String> body = new HashMap<>();
-        headers.put("action",command);
-        body.put("Name",input.get(0));
-        body.put("toUpdate",input.get(1));
-        body.put("Val",input.get(2));
+        headers.put("action", command);
+        body.put("Name", input.get(0));
+        body.put("toUpdate", input.get(1));
+        body.put("Val", input.get(2));
 
-        response = sendRequest(headers,body);
+        response = sendRequest(headers, body);
         return response.json;
     }
 
-    public String deleteSong(String songLink,boolean user) {
+    public String deleteSong(String songLink, boolean user) {
         String command = "";
-        if(user){
+        if (user) {
             command = "user/delete";
-        }
-        else {
+        } else {
             command = "admin/delete";
         }
-        Map <String, String> headers = new HashMap <>();
-        Map <String, String> body = new HashMap <>();
+        Map<String, String> headers = new HashMap<>();
+        Map<String, String> body = new HashMap<>();
         headers.put("action", command);
-        body.put("Link",songLink);
+        body.put("Link", songLink);
         response = sendRequest(headers, body);
         return response.json;
     }
 
 
-
-    public  Response sendRequest(Map <String, String> headers, Map <String, String> body)  {
+    public Response sendRequest(Map<String, String> headers, Map<String, String> body) {
 
         try {
             toServer = new Socket("localhost", port);
@@ -115,14 +111,16 @@ public class Client {
             System.out.println(gson.toJson(request));
             writer.println(gson.toJson(request));
             writer.flush();
-            Type type = new TypeToken<Response>() {}.getType();
+            Type type = new TypeToken<Response>() {
+            }.getType();
             response = gson.fromJson(reader.nextLine(), type);
             writer.close();
             reader.close();
             toServer.close();
             return response;
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        catch (Exception ex){ ex.printStackTrace();}
         return new Response("Error");
 
     }

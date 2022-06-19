@@ -1,9 +1,12 @@
 package com.hit.view;
 
 import com.hit.client.Song;
+import com.hit.driver.ButtonEditor;
+import com.hit.driver.ButtonRenderer;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,8 +15,8 @@ import java.util.List;
 public class AdminView extends JPanel implements ActionListener {
     private JTable songsTable;
     private GraphicalView gui;
-    private String[] songTableColumn = {"Name", "Artist","Genre","Link",""};
-    private JButton backButton;
+    private String[] songTableColumn = {"Name", "Artist", "Genre", "Link", "Action"};
+    private JButton backButton, button;
     private JLabel jLabel;
 
     public AdminView(GraphicalView gui) {
@@ -21,6 +24,8 @@ public class AdminView extends JPanel implements ActionListener {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.gui = gui;
         this.jLabel = new JLabel("Song List");
+        this.button  = new JButton("Delete");
+        this.button.setText("Delete");
         // toolbar for buttons
         JToolBar toolBar = new JToolBar();
         songsTable = new JTable();
@@ -44,15 +49,18 @@ public class AdminView extends JPanel implements ActionListener {
         defaultTableModel.setColumnIdentifiers(songTableColumn);
 
         for (Song song : songs) {
-            String[] row = new String[4];
+            String[] row = new String[5];
             row[0] = song.getSongName();
             row[1] = song.getSongArtist();
             row[2] = song.getSongGenre();
             row[3] = song.getSongLink();
+            row[4] = "";
 
             defaultTableModel.addRow(row);
 
         }
+        songsTable.getColumn("Action").setCellRenderer(new ButtonRenderer());
+        songsTable.getColumn("Action").setCellEditor(new ButtonEditor(new JCheckBox(),this.button));
     }
 
     // event listener for back button
@@ -62,7 +70,7 @@ public class AdminView extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if("back".equals(e.getActionCommand())){
+        if ("back".equals(e.getActionCommand())) {
             this.gui.mainView(this);
 
         }

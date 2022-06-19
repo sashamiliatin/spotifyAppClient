@@ -15,7 +15,7 @@ public class GraphicalView implements View {
     private JLabel label;
     private JPanel panel;
     private JFrame frame;
-    Songs songs  = new Songs();
+    Songs songs = new Songs();
 
     public GraphicalView() {
     }
@@ -62,7 +62,8 @@ public class GraphicalView implements View {
         frame.pack();
         frame.setVisible(true);
     }
-    public void mainView(JPanel panel){
+
+    public void mainView(JPanel panel) {
 //        this.mainMenu.setVisible(false);
 //        this.adminView.setVisible(false);
         panel.setVisible(false);
@@ -71,6 +72,7 @@ public class GraphicalView implements View {
         frame.pack();
         frame.setVisible(true);
     }
+
     public void frameChange() {
 
     }

@@ -13,7 +13,7 @@ import java.util.Observer;
 public class UserView extends JPanel implements ActionListener {
     private JTable songsTable;
     private GraphicalView gui;
-    private String[] songTableColumn = {"Name", "Artist","Genre","Link",""};
+    private String[] songTableColumn = {"Name", "Artist", "Genre", "Link", ""};
     private JButton backButton, addSong;
     private JLabel jLabel;
 
@@ -58,11 +58,10 @@ public class UserView extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if("back".equals(e.getActionCommand())){
+        if ("back".equals(e.getActionCommand())) {
             this.gui.mainView(this);
 
-        }
-        else if ("search".equals(e.getActionCommand())){
+        } else if ("search".equals(e.getActionCommand())) {
             this.gui.mainView(this);
         }
 

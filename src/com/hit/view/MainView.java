@@ -35,20 +35,16 @@ public class MainView extends JPanel implements ActionListener {
     }
 
 
-
-
     @Override
     public void actionPerformed(ActionEvent e) {
-        if("user".equals(e.getActionCommand())){
+        if ("user".equals(e.getActionCommand())) {
             this.gui.userView();
 
-        }
-        else {
+        } else {
             this.gui.adminView();
         }
 
     }
-
 
 
 }

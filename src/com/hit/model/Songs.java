@@ -14,7 +14,7 @@ public class Songs extends Observable implements Model {
     }
 
     public void add(Song song) {
-        client.saveSong(song,false);
+        client.saveSong(song, false);
     }
 
     public List<Song> getPlaylist() {
@@ -22,15 +22,15 @@ public class Songs extends Observable implements Model {
     }
 
     public void remove(Song song) {
-        client.deleteSong(song.getSongLink(),false);
+        client.deleteSong(song.getSongLink(), false);
     }
 
     public void addToPlaylist(Song song) {
-        client.saveSong(song,true);
+        client.saveSong(song, true);
     }
 
     public void removeFromPlaylist(Song song) {
-        client.deleteSong(song.getSongLink(),true);
+        client.deleteSong(song.getSongLink(), true);
     }
 
 
