@@ -3,6 +3,7 @@ package com.hit.model;
 
 import com.hit.client.Client;
 import com.hit.client.Song;
+import com.hit.view.UserView;
 
 import java.util.*;
 
@@ -22,18 +23,17 @@ public class Songs extends Observable implements Model {
     }
 
     public void remove(String songLink) {
-//        client.deleteSong(songLink, false);
+        client.deleteSong(songLink, false);
         setChanged();
-        notifyObservers(client.deleteSong(songLink, false));
-
+        notifyObservers();
     }
 
     public void addToPlaylist(Song song) {
         client.saveSong(song, true);
     }
 
-    public void removeFromPlaylist(Song song) {
-        client.deleteSong(song.getSongLink(), true);
+    public void removeFromPlaylist(String songLink) {
+        client.deleteSong(songLink, true);
     }
 
 
