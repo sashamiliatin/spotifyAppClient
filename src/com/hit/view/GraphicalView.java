@@ -5,11 +5,18 @@ import com.hit.model.Songs;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class GraphicalView implements View {
     private MainView mainMenu;
     private UserView userView;
     private AdminView adminView;
+    private AllSongList allSongsView;
+
+    private AddSongForm addSongForm;
+
     private JButton user;
     private JButton admin;
     private JLabel label;
@@ -40,8 +47,55 @@ public class GraphicalView implements View {
         frame.setVisible(true);
     }
 
+
+    public void deleteSongFromDb(String text) {
+        songs.remove(text);
+    }
+
+    public void deleteFromPlaylist(String text) {
+        songs.removeFromPlaylist(text);
+    }
+
+    public void playSongVideo(URI songLink) throws IOException {
+        Desktop.getDesktop().browse(songLink);
+    }
+
+    public void addToPlaylist(Song song) {
+        songs.addToPlaylist(song);
+    }
+
+    public Song createNewSong(String name, String artist, String genre, String link) {
+        Song newSong = new Song(name, artist, genre, link);
+        return newSong;
+    }
+
+    public void addSong(Song song) {
+        songs.add(song);
+    }
+
+    public void adminView() {
+        this.mainMenu.setVisible(false);
+        this.panel.setVisible(false);
+        try {
+            this.addSongForm.setVisible(false);
+        } catch (NullPointerException exc) {
+
+        }
+        this.adminView = new AdminView(this);
+        this.adminView.loadSongs(songs.getAll());
+        frame.getContentPane().add(this.adminView);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+
     public void userView() {
         this.mainMenu.setVisible(false);
+        try {
+            this.allSongsView.setVisible(false);
+        } catch (NullPointerException exc) {
+
+        }
         this.userView = new UserView(this);
         this.userView.loadSongs(songs.getPlaylist());
         frame.getContentPane().add(this.userView);
@@ -50,23 +104,28 @@ public class GraphicalView implements View {
         frameChange();
     }
 
-    public void setUserInput(String text) {
-        songs.remove(text);
-
+    public void allSongsView() {
+        panel.setVisible(false);
+        this.mainMenu.setVisible(false);
+        this.userView.setVisible(false);
+        this.allSongsView = new AllSongList(this);
+        this.allSongsView.loadAllSongs(songs.getAll());
+        frame.getContentPane().add(this.allSongsView);
+        frame.pack();
+        frame.setVisible(true);
     }
 
-    public void adminView() {
+    public void addSongView() {
+        panel.setVisible(false);
         this.mainMenu.setVisible(false);
-        this.adminView = new AdminView(this);
-        this.adminView.loadSongs(songs.getAll());
-        frame.getContentPane().add(this.adminView);
+        this.adminView.setVisible(false);
+        this.addSongForm = new AddSongForm(this);
+        frame.getContentPane().add(this.addSongForm);
         frame.pack();
         frame.setVisible(true);
     }
 
     public void mainView(JPanel panel) {
-//        this.mainMenu.setVisible(false);
-//        this.adminView.setVisible(false);
         panel.setVisible(false);
         this.mainMenu = new MainView(this);
         frame.getContentPane().add(this.mainMenu);

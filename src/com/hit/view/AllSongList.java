@@ -11,14 +11,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
-public class AdminView extends JPanel implements ActionListener {
+public class AllSongList extends JPanel implements ActionListener {
     private JTable songsTable;
     private GraphicalView gui;
-    private String[] songTableColumn = {"Name", "Artist", "Genre", "Link", "Delete"};
-    private JButton backButton, button, addSong;
+    private String[] songTableColumn = {"Name", "Artist", "Genre", "Link", "Add To Playlist"};
+    private JButton backButton, button;
     private JLabel jLabel;
 
-    public AdminView(GraphicalView gui) {
+    public AllSongList(GraphicalView gui) {
         // uses box layout
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.gui = gui;
@@ -35,19 +35,15 @@ public class AdminView extends JPanel implements ActionListener {
         backButton = new JButton("Go Back");
         backButton.setActionCommand("back");
         backButton.addActionListener(this);
-        addSong = new JButton("Add New Song");
-        addSong.setActionCommand("add");
-        addSong.addActionListener(this);
         add(toolBar);
         add(jLabel);
         toolBar.add(backButton);
-        toolBar.add(addSong);
         toolBar.setMaximumSize(new Dimension(Integer.MAX_VALUE, toolBar.getMinimumSize().height));
         add(userTableScroll);
 
     }
 
-    public void loadSongs(List<Song> songs) {
+    public void loadAllSongs(List<Song> songs) {
         DefaultTableModel defaultTableModel = (DefaultTableModel) songsTable.getModel();
         defaultTableModel.setColumnIdentifiers(songTableColumn);
 
@@ -65,32 +61,28 @@ public class AdminView extends JPanel implements ActionListener {
         songsTable.getColumn("Link").setMinWidth(0);
         songsTable.getColumn("Link").setMaxWidth(0);
         songsTable.getColumn("Link").setWidth(0);
-        Action delete = new AbstractAction("Delete") {
+        Action add = new AbstractAction("Add") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JTable table = (JTable) e.getSource();
                 int row = Integer.valueOf(e.getActionCommand());
-                if (JOptionPane.showConfirmDialog(null, "You will delete this song. Are you sure?", "WARNING",
-                        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    System.out.println(table.getModel().getValueAt(row, 3));
-                    gui.deleteSongFromDb((String) table.getModel().getValueAt(row, 3));
-                } else {
-                    //Do nothing
-                }
+                Song newSong = gui.createNewSong(
+                        (String) table.getModel().getValueAt(row, 0),
+                        (String) table.getModel().getValueAt(row, 1),
+                        (String) table.getModel().getValueAt(row, 2),
+                        (String) table.getModel().getValueAt(row, 3)
+                );
+                gui.addToPlaylist(newSong);
             }
         };
-
-        ButtonColumn buttonColumn = new ButtonColumn(songsTable, delete, 4, "Delete");
+        ButtonColumn buttonColumn = new ButtonColumn(songsTable, add, 4, "Add");
         buttonColumn.setMnemonic(KeyEvent.VK_D);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if ("back".equals(e.getActionCommand())) {
-            this.gui.mainView(this);
-        } else if ("add".equals(e.getActionCommand())) {
-            this.gui.addSongView();
+            this.gui.userView();
         }
-
     }
 }

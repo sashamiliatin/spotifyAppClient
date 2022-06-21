@@ -3,13 +3,10 @@ package com.hit.view;
 //import javafx.scene.Scene;
 //import javafx.scene.web.WebView;
 //import javafx.stage.Stage;
-import chrriis.dj.nativeswing.swtimpl.NativeInterface;
-import chrriis.dj.nativeswing.swtimpl.components.JWebBrowser;
+
 import com.hit.client.Song;
 import com.hit.driver.ButtonColumn;
 
-import javax.media.CannotRealizeException;
-import javax.media.NoPlayerException;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -23,23 +20,12 @@ import java.util.List;
 import java.util.Observer;
 
 
-
 public class UserView extends JPanel implements ActionListener {
     private JTable songsTable;
     private GraphicalView gui;
-    private String[] songTableColumn = {"Name", "Artist", "Genre", "Link", "Play"};
+    private String[] songTableColumn = {"Name", "Artist", "Genre", "Link", "Play", "Delete"};
     private JButton backButton, addSong;
     private JLabel jLabel;
-
-    public static JPanel getBrowserPanel(String url) {
-        JPanel webBrowserPanel = new JPanel(new BorderLayout());
-        JWebBrowser webBrowser = new JWebBrowser();
-        webBrowserPanel.add(webBrowser, BorderLayout.CENTER);
-        webBrowser.setBarsVisible(false);
-        webBrowser.navigate(url);
-        return webBrowserPanel;
-    }
-
 
     public UserView(GraphicalView gui) {
         this.gui = gui;
@@ -56,9 +42,13 @@ public class UserView extends JPanel implements ActionListener {
         backButton = new JButton("Go Back");
         backButton.setActionCommand("back");
         backButton.addActionListener(this);
+        addSong = new JButton("Add Song To Playlist");
+        addSong.setActionCommand("add");
+        addSong.addActionListener(this);
         add(toolBar);
         add(jLabel);
         toolBar.add(backButton);
+        toolBar.add(addSong);
         toolBar.setMaximumSize(new Dimension(Integer.MAX_VALUE, toolBar.getMinimumSize().height));
         add(userTableScroll);
     }
@@ -68,58 +58,69 @@ public class UserView extends JPanel implements ActionListener {
         defaultTableModel.setColumnIdentifiers(songTableColumn);
 
         for (Song song : songs) {
-            String[] row = new String[5];
+            String[] row = new String[6];
             row[0] = song.getSongName();
             row[1] = song.getSongArtist();
             row[2] = song.getSongGenre();
             row[3] = song.getSongLink();
-            row[4] ="";
-
+            row[4] = "";
+            row[5] = "";
             defaultTableModel.addRow(row);
-
         }
+        songsTable.getColumn("Link").setMinWidth(0);
+        songsTable.getColumn("Link").setMaxWidth(0);
+        songsTable.getColumn("Link").setWidth(0);
         Action play = new AbstractAction("Play") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JTable table = (JTable) e.getSource();
                 int row = Integer.valueOf(e.getActionCommand());
+                URI songUri = null;
                 try {
-                    Desktop.getDesktop().browse(new URI("https://"+table.getModel().getValueAt(row,3)));
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+                    songUri = new URI((String) table.getModel().getValueAt(row, 3));
                 } catch (URISyntaxException ex) {
-                    ex.printStackTrace();
+                    try {
+                        songUri = new URI("https://" + table.getModel().getValueAt(row, 3));
+                    } catch (URISyntaxException exc) {
+                        throw new RuntimeException(exc);
+                    }
+                }
+                try {
+                    gui.playSongVideo(songUri);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
                 }
             }
         };
-        ButtonColumn buttonColumn = new ButtonColumn(songsTable, play, 4,"Play");
+        ButtonColumn buttonColumn = new ButtonColumn(songsTable, play, 4, "Play");
         buttonColumn.setMnemonic(KeyEvent.VK_D);
+
+        Action delete = new AbstractAction("Delete") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JTable table = (JTable) e.getSource();
+                int row = Integer.valueOf(e.getActionCommand());
+                if (JOptionPane.showConfirmDialog(null, "You will delete this song. Are you sure?", "WARNING",
+                        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    System.out.println(table.getModel().getValueAt(row, 3));
+                    gui.deleteFromPlaylist((String) table.getModel().getValueAt(row, 3));
+                } else {
+                    //Do nothing
+                }
+            }
+        };
+        ButtonColumn buttonColumnDel = new ButtonColumn(songsTable, delete, 5, "Delete");
+        buttonColumnDel.setMnemonic(KeyEvent.VK_D);
     }
-    public static JPanel youtubePanel(String url){
-        JPanel wbPanel = new JPanel(new BorderLayout());
-        JWebBrowser wb = new JWebBrowser();
-        wbPanel.add(wb,BorderLayout.CENTER);
-        wb.setBarsVisible(false);
-        wb.navigate(url);
-        return wbPanel;
-    }
+
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if ("back".equals(e.getActionCommand())) {
             this.gui.mainView(this);
-
-        } else if ("search".equals(e.getActionCommand())) {
-            this.gui.mainView(this);
+        } else if ("add".equals(e.getActionCommand())) {
+            this.gui.allSongsView();
         }
 
     }
-//    MediaPlayer mediaPanel = new MediaPlayer( mediaUrl );
-//
-//mediaTest.add( mediaPanel );
-//
-//mediaTest.setSize( 800, 700 ); // set the size of the player
-//
-//mediaTest.setLocationRelativeTo(null);
-//
-//mediaTest.setVisible( true );
 }
