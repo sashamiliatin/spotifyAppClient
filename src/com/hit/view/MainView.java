@@ -22,7 +22,7 @@ public class MainView extends JPanel implements ActionListener {
 
     private void initComponents() {
 
-        this.img =new ImageIcon("src/com/hit/images/background3.jpeg").getImage();
+        this.img = new ImageIcon("src/com/hit/images/background3.jpeg").getImage();
         this.setPreferredSize(new Dimension(200, 300));
         this.setLayout(new FlowLayout());
         this.jLabel1 = new JLabel("Main Menu");
@@ -43,14 +43,13 @@ public class MainView extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if ("user".equals(e.getActionCommand())) {
             this.gui.userView();
-
         } else {
-            this.gui.adminView();
+            this.gui.adminAuth();
         }
 
     }
 
-@Override
+    @Override
     protected void paintComponent(Graphics g) {
 
         super.paintComponent(g);

@@ -17,6 +17,8 @@ public class GraphicalView implements View {
 
     private AddSongForm addSongForm;
 
+    private AdminAuth adminAuth;
+
     private JButton user;
     private JButton admin;
     private JLabel label;
@@ -78,6 +80,7 @@ public class GraphicalView implements View {
 
     public void adminView() {
         this.mainMenu.setVisible(false);
+        this.adminAuth.setVisible(false);
         this.panel.setVisible(false);
         try {
             this.addSongForm.setVisible(false);
@@ -87,6 +90,21 @@ public class GraphicalView implements View {
         this.adminView = new AdminView(this);
         this.adminView.loadSongs(songs.getAll());
         frame.getContentPane().add(this.adminView);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public void adminAuth() {
+        this.mainMenu.setVisible(false);
+        this.panel.setVisible(false);
+        try {
+            this.addSongForm.setVisible(false);
+            this.adminView.setVisible(false);
+        } catch (NullPointerException exc) {
+
+        }
+        this.adminAuth = new AdminAuth(this);
+        frame.getContentPane().add(this.adminAuth);
         frame.pack();
         frame.setVisible(true);
     }
