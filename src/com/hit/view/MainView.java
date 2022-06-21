@@ -13,6 +13,7 @@ public class MainView extends JPanel implements ActionListener {
     protected JButton user;
     private JLabel jLabel1;
     private JPanel panel;
+    private Image img;
 
     public MainView(GraphicalView gui) {
         this.gui = gui;
@@ -20,9 +21,12 @@ public class MainView extends JPanel implements ActionListener {
     }
 
     private void initComponents() {
+
+        this.img =new ImageIcon("src/com/hit/images/background3.jpeg").getImage();
         this.setPreferredSize(new Dimension(200, 300));
         this.setLayout(new FlowLayout());
         this.jLabel1 = new JLabel("Main Menu");
+        this.jLabel1.setForeground(Color.red);
         this.admin = new JButton("Admin");
         this.user = new JButton("User");
         this.user.setActionCommand("user");
@@ -44,6 +48,13 @@ public class MainView extends JPanel implements ActionListener {
             this.gui.adminView();
         }
 
+    }
+
+@Override
+    protected void paintComponent(Graphics g) {
+
+        super.paintComponent(g);
+        g.drawImage(img, 0, 0, null);
     }
 
 

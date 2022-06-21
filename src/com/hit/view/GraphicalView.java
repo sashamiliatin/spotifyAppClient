@@ -38,11 +38,14 @@ public class GraphicalView implements View {
 
     private void createAndShowGUI() {
         this.frame = new JFrame("Spotify App");
-        this.frame.setPreferredSize(new Dimension(400, 500));
+        this.frame.setPreferredSize(new Dimension(500, 655));
+//        this.frame.setResizable(false);
         this.frame.setDefaultCloseOperation(3);
+        this.frame.setLocationRelativeTo(null);
         this.panel = new JPanel();
         this.mainMenu = new MainView(this);
         frame.getContentPane().add(this.mainMenu);
+
         frame.pack();
         frame.setVisible(true);
     }

@@ -17,8 +17,10 @@ public class AllSongList extends JPanel implements ActionListener {
     private String[] songTableColumn = {"Name", "Artist", "Genre", "Link", "Add To Playlist"};
     private JButton backButton, button;
     private JLabel jLabel;
+    private Image img;
 
     public AllSongList(GraphicalView gui) {
+        this.img =new ImageIcon("src/com/hit/images/background4.jpeg").getImage();
         // uses box layout
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.gui = gui;
@@ -39,6 +41,8 @@ public class AllSongList extends JPanel implements ActionListener {
         add(jLabel);
         toolBar.add(backButton);
         toolBar.setMaximumSize(new Dimension(Integer.MAX_VALUE, toolBar.getMinimumSize().height));
+        userTableScroll.setViewport(new ImageViewport(img));
+        userTableScroll.setViewportView(songsTable);
         add(userTableScroll);
 
     }
@@ -61,6 +65,7 @@ public class AllSongList extends JPanel implements ActionListener {
         songsTable.getColumn("Link").setMinWidth(0);
         songsTable.getColumn("Link").setMaxWidth(0);
         songsTable.getColumn("Link").setWidth(0);
+        songsTable.setBackground(new Color(255, 255, 255, 0));
         Action add = new AbstractAction("Add") {
             @Override
             public void actionPerformed(ActionEvent e) {
