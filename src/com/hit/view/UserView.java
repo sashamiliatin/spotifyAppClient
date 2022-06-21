@@ -26,16 +26,17 @@ public class UserView extends JPanel implements ActionListener {
     private String[] songTableColumn = {"Name", "Artist", "Genre", "Link", "Play", "Delete"};
     private JButton backButton, addSong;
     private JLabel jLabel;
+    private Image img;
 
     public UserView(GraphicalView gui) {
         this.gui = gui;
+        this.img =new ImageIcon("src/com/hit/images/background2.jpeg").getImage();
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.gui = gui;
         this.jLabel = new JLabel("Playlist");
         // toolbar for buttons
         JToolBar toolBar = new JToolBar();
         songsTable = new JTable();
-
         // scroll bar for table
         JScrollPane userTableScroll = new JScrollPane(songsTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -50,6 +51,8 @@ public class UserView extends JPanel implements ActionListener {
         toolBar.add(backButton);
         toolBar.add(addSong);
         toolBar.setMaximumSize(new Dimension(Integer.MAX_VALUE, toolBar.getMinimumSize().height));
+        userTableScroll.setViewport(new ImageViewport(img));
+        userTableScroll.setViewportView(songsTable);
         add(userTableScroll);
     }
 
@@ -67,6 +70,11 @@ public class UserView extends JPanel implements ActionListener {
             row[5] = "";
             defaultTableModel.addRow(row);
         }
+        songsTable.getColumn("Link").setMinWidth(0);
+        songsTable.getColumn("Link").setMaxWidth(0);
+        songsTable.getColumn("Link").setWidth(0);
+//        songsTable.setOpaque(false);
+        songsTable.setBackground(new Color(255, 255, 255, 0));
         Action play = new AbstractAction("Play") {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -75,11 +83,11 @@ public class UserView extends JPanel implements ActionListener {
                 URI songUri = null;
                 try {
                     songUri = new URI((String) table.getModel().getValueAt(row, 3));
-                } catch (URISyntaxException ex) {
+                } catch (URISyntaxException exception) {
                     try {
                         songUri = new URI("https://" + table.getModel().getValueAt(row, 3));
-                    } catch (URISyntaxException exc) {
-                        throw new RuntimeException(exc);
+                    } catch (URISyntaxException ex) {
+                        throw new RuntimeException(ex);
                     }
                 }
                 try {

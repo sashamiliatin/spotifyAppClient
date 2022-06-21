@@ -17,8 +17,12 @@ public class AdminView extends JPanel implements ActionListener {
     private String[] songTableColumn = {"Name", "Artist", "Genre", "Link", "Delete"};
     private JButton backButton, button, addSong;
     private JLabel jLabel;
+    private Image img;
+
 
     public AdminView(GraphicalView gui) {
+        this.img =new ImageIcon("src/com/hit/images/background1.jpeg").getImage();
+
         // uses box layout
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.gui = gui;
@@ -43,6 +47,8 @@ public class AdminView extends JPanel implements ActionListener {
         toolBar.add(backButton);
         toolBar.add(addSong);
         toolBar.setMaximumSize(new Dimension(Integer.MAX_VALUE, toolBar.getMinimumSize().height));
+        userTableScroll.setViewport(new ImageViewport(img));
+        userTableScroll.setViewportView(songsTable);
         add(userTableScroll);
 
     }
@@ -62,6 +68,10 @@ public class AdminView extends JPanel implements ActionListener {
             defaultTableModel.addRow(row);
 
         }
+        songsTable.getColumn("Link").setMinWidth(0);
+        songsTable.getColumn("Link").setMaxWidth(0);
+        songsTable.getColumn("Link").setWidth(0);
+        songsTable.setBackground(new Color(255, 255, 255, 0));
         Action delete = new AbstractAction("Delete") {
             @Override
             public void actionPerformed(ActionEvent e) {
