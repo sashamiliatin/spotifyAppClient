@@ -8,12 +8,14 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Observable;
 
-public class GraphicalView implements View {
+public class GraphicalView extends Observable implements View {
     private MainView mainMenu;
     private UserView userView;
     private AdminView adminView;
     private AllSongList allSongsView;
+    private searchSongView searchSongView;
 
     private AddSongForm addSongForm;
 
@@ -41,7 +43,7 @@ public class GraphicalView implements View {
     private void createAndShowGUI() {
         this.frame = new JFrame("Spotify App");
         this.frame.setPreferredSize(new Dimension(500, 655));
-//        this.frame.setResizable(false);
+        this.frame.setResizable(false);
         this.frame.setDefaultCloseOperation(3);
         this.frame.setLocationRelativeTo(null);
         this.panel = new JPanel();
@@ -55,10 +57,16 @@ public class GraphicalView implements View {
 
     public void deleteSongFromDb(String text) {
         songs.remove(text);
+        setChanged();
+        adminView.loadSongs(songs.getAll());
+        notifyObservers("adminDelete");
     }
 
     public void deleteFromPlaylist(String text) {
         songs.removeFromPlaylist(text);
+        setChanged();
+        userView.loadSongs(songs.getPlaylist());
+        notifyObservers("userDelete");
     }
 
     public void playSongVideo(URI songLink) throws IOException {
@@ -156,4 +164,15 @@ public class GraphicalView implements View {
 
     public void frameChange() {
     }
+
+    public void searchSongGuiView() {
+        try {
+            userView.setVisible(false);
+        } catch (NullPointerException ex){}
+        this.searchSongView = new searchSongView(this);
+        frame.getContentPane().add(this.searchSongView);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
 }

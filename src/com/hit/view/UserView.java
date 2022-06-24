@@ -6,6 +6,7 @@ package com.hit.view;
 
 import com.hit.client.Song;
 import com.hit.driver.ButtonColumn;
+import com.sun.xml.internal.bind.v2.TODO;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -24,7 +25,7 @@ public class UserView extends JPanel implements ActionListener {
     private JTable songsTable;
     private GraphicalView gui;
     private String[] songTableColumn = {"Name", "Artist", "Genre", "Link", "Play", "Delete"};
-    private JButton backButton, addSong;
+    private JButton backButton, addSong, searchSong;
     private JLabel jLabel;
     private Image img;
 
@@ -46,10 +47,14 @@ public class UserView extends JPanel implements ActionListener {
         addSong = new JButton("Add Song To Playlist");
         addSong.setActionCommand("add");
         addSong.addActionListener(this);
+        searchSong = new JButton("search song");
+        searchSong.setActionCommand("search");
+        searchSong.addActionListener(this);
         add(toolBar);
         add(jLabel);
         toolBar.add(backButton);
         toolBar.add(addSong);
+        toolBar.add(searchSong);
         toolBar.setMaximumSize(new Dimension(Integer.MAX_VALUE, toolBar.getMinimumSize().height));
         userTableScroll.setViewport(new ImageViewport(img));
         userTableScroll.setViewportView(songsTable);
@@ -57,7 +62,9 @@ public class UserView extends JPanel implements ActionListener {
     }
 
     public void loadSongs(List<Song> songs) {
-        DefaultTableModel defaultTableModel = (DefaultTableModel) songsTable.getModel();
+        DefaultTableModel defaultTableModel =  (DefaultTableModel) songsTable.getModel();
+        defaultTableModel.setRowCount(0);
+
         defaultTableModel.setColumnIdentifiers(songTableColumn);
 
         for (Song song : songs) {
@@ -99,6 +106,7 @@ public class UserView extends JPanel implements ActionListener {
         };
         ButtonColumn buttonColumn = new ButtonColumn(songsTable, play, 4, "Play");
         buttonColumn.setMnemonic(KeyEvent.VK_D);
+        defaultTableModel.fireTableDataChanged();
 
         Action delete = new AbstractAction("Delete") {
             @Override
@@ -112,7 +120,9 @@ public class UserView extends JPanel implements ActionListener {
                 } else {
                     //Do nothing
                 }
+
             }
+
         };
         ButtonColumn buttonColumnDel = new ButtonColumn(songsTable, delete, 5, "Delete");
         buttonColumnDel.setMnemonic(KeyEvent.VK_D);
@@ -125,6 +135,9 @@ public class UserView extends JPanel implements ActionListener {
             this.gui.mainView(this);
         } else if ("add".equals(e.getActionCommand())) {
             this.gui.allSongsView();
+        }
+        else {
+            this.gui.searchSongGuiView();
         }
 
     }

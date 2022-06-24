@@ -16,6 +16,7 @@ public class MVCDriver {
         View view = new GraphicalView();
         Controller controller = new ViewController(model, view);
         ((Songs) model).addObserver(controller);
+        ((GraphicalView)view).addObserver(controller);
 //        ((GraphicalView)view).addObserver(controller);
         view.start();
     }

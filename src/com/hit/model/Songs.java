@@ -10,6 +10,7 @@ import java.util.*;
 public class Songs extends Observable implements Model {
     Client client = new Client();
 
+
     public List<Song> getAll() {
         return client.getSongs(false);
     }
@@ -34,6 +35,16 @@ public class Songs extends Observable implements Model {
 
     public void removeFromPlaylist(String songLink) {
         client.deleteSong(songLink, true);
+    }
+
+    public void updatePlayList(){
+        setChanged();
+
+    }
+
+    public void updateSongsList(){
+        setChanged();
+
     }
 
 

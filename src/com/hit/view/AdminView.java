@@ -56,7 +56,7 @@ public class AdminView extends JPanel implements ActionListener {
     public void loadSongs(List<Song> songs) {
         DefaultTableModel defaultTableModel = (DefaultTableModel) songsTable.getModel();
         defaultTableModel.setColumnIdentifiers(songTableColumn);
-
+        defaultTableModel.setRowCount(0);
         for (Song song : songs) {
             String[] row = new String[5];
             row[0] = song.getSongName();
