@@ -62,6 +62,13 @@ public class GraphicalView extends Observable implements View {
         notifyObservers("adminDelete");
     }
 
+
+    public void searchSongs(String text) {
+        setChanged();
+        searchSongView.loadSearchedSongs(songs.searchSongs(text));
+        notifyObservers("searchedSongs");
+    }
+
     public void deleteFromPlaylist(String text) {
         songs.removeFromPlaylist(text);
         setChanged();
@@ -120,6 +127,13 @@ public class GraphicalView extends Observable implements View {
 
     public void userView() {
         this.mainMenu.setVisible(false);
+        this.panel.setVisible(false);
+        try {
+            this.searchSongView.setVisible(false);
+        } catch (NullPointerException exc) {
+
+        }
+
         try {
             this.allSongsView.setVisible(false);
         } catch (NullPointerException exc) {
@@ -136,7 +150,12 @@ public class GraphicalView extends Observable implements View {
     public void allSongsView() {
         panel.setVisible(false);
         this.mainMenu.setVisible(false);
-        this.userView.setVisible(false);
+        try {
+            this.userView.setVisible(false);
+            this.searchSongView.setVisible(false);
+        } catch (NullPointerException exc) {
+
+        }
         this.allSongsView = new AllSongList(this);
         this.allSongsView.loadAllSongs(songs.getAll());
         frame.getContentPane().add(this.allSongsView);
@@ -167,9 +186,12 @@ public class GraphicalView extends Observable implements View {
 
     public void searchSongGuiView() {
         try {
-            userView.setVisible(false);
-        } catch (NullPointerException ex){}
+            this.userView.setVisible(false);
+            this.panel.setVisible(false);
+        } catch (NullPointerException ex) {
+        }
         this.searchSongView = new searchSongView(this);
+//        this.searchSongView.loadSearchedSongs();
         frame.getContentPane().add(this.searchSongView);
         frame.pack();
         frame.setVisible(true);

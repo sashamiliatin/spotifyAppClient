@@ -15,6 +15,10 @@ public class Songs extends Observable implements Model {
         return client.getSongs(false);
     }
 
+    public List<Song> searchSongs(String value) {
+        return client.getSong(value, false);
+    }
+
     public void add(Song song) {
         client.saveSong(song, false);
     }
@@ -37,15 +41,16 @@ public class Songs extends Observable implements Model {
         client.deleteSong(songLink, true);
     }
 
-    public void updatePlayList(){
+    public void updatePlayList() {
         setChanged();
-
     }
 
-    public void updateSongsList(){
+    public void updateSongsList() {
         setChanged();
-
     }
 
+    public void searchSongsList() {
+        setChanged();
+    }
 
 }

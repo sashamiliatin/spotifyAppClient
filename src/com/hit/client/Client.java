@@ -20,7 +20,7 @@ public class Client {
     public Request request;
     public Scanner reader;
     public Socket toServer;
-    public int port = 6000;
+    public int port = 3000;
 
 
     public List<Song> getSongs(boolean user) {

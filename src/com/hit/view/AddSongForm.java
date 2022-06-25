@@ -14,7 +14,7 @@ public class AddSongForm extends JPanel implements ActionListener   {
     private GraphicalView gui;
     private JLabel lblName, lblArtist, lblGenre, lblLink,label;
     private JTextField tfName, tfArtist, tfGenre, tfLink;
-    private JButton btnClear, btnSubmit, btnBack, dummyBtn;
+    private JButton btnClear, btnSubmit, btnBack;
     private Image img;
 
     AddSongForm(GraphicalView gui)

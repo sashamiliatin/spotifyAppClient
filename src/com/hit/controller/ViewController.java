@@ -1,5 +1,6 @@
 package com.hit.controller;
 
+import com.hit.client.Song;
 import com.hit.model.Model;
 import com.hit.model.Songs;
 import com.hit.view.View;
@@ -17,11 +18,12 @@ public class ViewController implements Controller {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (arg.equals("userDelete")){
-            ((Songs)model).updatePlayList();
-        }
-        else {
-            ((Songs)model).updateSongsList();
+        if (arg.equals("userDelete")) {
+            ((Songs) model).updatePlayList();
+        } else if (arg.equals("searchedSongs")) {
+            ((Songs) model).searchSongsList();
+        } else {
+            ((Songs) model).updateSongsList();
         }
     }
 }

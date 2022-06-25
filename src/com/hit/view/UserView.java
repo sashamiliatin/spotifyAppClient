@@ -1,13 +1,6 @@
 package com.hit.view;
-//import javafx.application.Application;
-//import javafx.scene.Scene;
-//import javafx.scene.web.WebView;
-//import javafx.stage.Stage;
-
 import com.hit.client.Song;
 import com.hit.driver.ButtonColumn;
-import com.sun.xml.internal.bind.v2.TODO;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -48,7 +41,7 @@ public class UserView extends JPanel implements ActionListener {
         addSong = new JButton("Add Song To Playlist");
         addSong.setActionCommand("add");
         addSong.addActionListener(this);
-        searchSong = new JButton("search song");
+        searchSong = new JButton("Search Song");
         searchSong.setActionCommand("search");
         searchSong.addActionListener(this);
         add(toolBar);
