@@ -33,6 +33,7 @@ public class UserView extends JPanel implements ActionListener {
         this.gui = gui;
         this.img =new ImageIcon("src/com/hit/images/background2.jpeg").getImage();
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+
         this.gui = gui;
         this.jLabel = new JLabel("Playlist");
         // toolbar for buttons
