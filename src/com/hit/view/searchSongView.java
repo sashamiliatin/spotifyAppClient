@@ -84,7 +84,7 @@ public class searchSongView extends JPanel implements ActionListener {
         DefaultTableModel defaultTableModel = (DefaultTableModel) songsTable.getModel();
         defaultTableModel.setRowCount(0);
         defaultTableModel.setColumnIdentifiers(songTableColumn);
-
+        songsTable.setOpaque(false);
         for (Song song : songs) {
             String[] row = new String[5];
             row[0] = song.getSongName();
